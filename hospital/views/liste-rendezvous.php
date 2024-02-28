@@ -28,6 +28,7 @@ $rdvs = Rdv::getAllRdvsWithPatientInfo();
             <td><?php echo $rdv['lastname']; ?></td>
             <td><?php echo $rdv['firstname']; ?></td>
             <td><a href="../controllers/rendezvous.php?id=<?php echo $rdv['idPatients']; ?>">Voir la fiche du rendez-vous</a></td>
+            <td><a href="../controllers/supprimer-rendezvous.php?id=<?php echo $rdv['id']; ?>">Supprimer le rendez-vous</a>
         </tr>
         <?php endforeach; ?>
     </table>

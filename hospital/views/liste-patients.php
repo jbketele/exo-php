@@ -3,30 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Liste des patients</title>
 </head>
 <body>
-    <?php
-        require_once '../views/index.php';
-        echo "<h2>Liste des patients</h2>";
-// Inclusion du modèle Patient
-require_once '../models/ajout-patient.php';
-
-// Récupération de la liste des patients
-$patients = Patient::getAllPatients(); // Cette méthode hypothétique récupère tous les patients depuis la base de données
-
-// Vérification s'il y a des patients à afficher
-if ($patients) {
-    // Affichage de la liste des patients
-    echo "<ul>";
-    foreach ($patients as $patient) {
-        echo "<p>Nom: " . $patient['lastname'] . ", Prénom: " . $patient['firstname'] . " - <a href='profil-patients.php?patient_id=" . $patient['id'] . "'>Voir Profil</a></p>";
-    }
-    echo "</ul>";
-} else {
-    echo "<p>Aucun patient trouvé.</p>";
-}
+<?php
+require_once '../views/index.php';
+require_once '../controllers/liste-patients.php';
 ?>
+<h2>Liste des patients</h2>
+<form action="../controllers/liste-patients.php" method="GET">
+        <label for="search">Rechercher un patient :</label>
+        <input type="text" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+        <button type="submit">Rechercher</button>
+    </form>
+    <?php if (!empty($patients)) : ?>
+<table>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Date de naissance</th>
+        <th>Téléphone</th>
+        <th>Mail</th>
+    </tr>
+    <?php foreach ($patients as $patient): ?>
+    <tr>
+        <td> <?php echo $patient['lastname'] ?> </td>
+        <td> <?php echo $patient['firstname'] ?> </td>
+        <td> <?php echo $patient['birthdate'] ?> </td>
+        <td> <?php echo $patient['phone'] ?> </td>
+        <td> <?php echo $patient['mail'] ?> </td>
+        <td><a href="profil-patients.php?id=<?php echo $patient['id'] ?>">Afficher profil</a></td>
+        <td><a href="../controllers/supprimer-patient.php?patient_id=<?php echo $patient['id'];?>">Supprimer le patient et ses rendez-vous</a></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<?php else : ?>
+        <p>Aucun patient trouvé.</p>
+    <?php endif; ?>
 <br>
     <button><a href="ajout-patient.php">Ajouter un patient</a></button>
 

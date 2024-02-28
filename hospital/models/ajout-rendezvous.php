@@ -100,4 +100,11 @@ class Rdv {
 
         return $rdvs;
     }
+    public static function deleteRdv($rdv_id) {
+        $connexion = Database::getInstance();
+        $query = "DELETE FROM appointments WHERE id = :rdv_id";
+        $statement = $connexion->prepare($query);
+        $statement->bindParam(':rdv_id', $rdv_id);
+        $statement->execute();
+    }
 }

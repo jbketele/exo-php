@@ -24,4 +24,6 @@ if(isset($_GET['id'])) {
     header("Location: ../views/liste-rendezvous.php");
     exit(); // Assurez-vous de terminer le script après la redirection
 }
+
+
 ?>
