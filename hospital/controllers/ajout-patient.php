@@ -27,4 +27,5 @@ if (isset($_POST['lastname']) && isset($_POST['firstname']) && isset($_POST['mai
 
     header("Location: ../views/liste-patients.php");
 }
+
 ?>

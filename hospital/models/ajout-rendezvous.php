@@ -11,6 +11,10 @@ class Rdv {
     public function setIdPatients($idPatients) {
         $this->idPatients = $idPatients;
     }
+    public function setId($id) {
+        $this->id = $id;
+    }
+
 
 
     public function addRdv () {
@@ -37,18 +41,18 @@ class Rdv {
         return $rdvs;
         }
 
-        public static function getAllRdvsWithPatientInfo() {
-            $connexion = Database::getInstance();
-            
-            // Requête SQL avec une jointure pour récupérer tous les rendez-vous avec les informations du patient associé
-            $query = 'SELECT appointments.*, patients.lastname, patients.firstname FROM appointments INNER JOIN patients ON appointments.idPatients = patients.id';
-            $statement = $connexion->query($query);
-            
-            // Récupération des résultats sous forme de tableau associatif
-            $rdvs = $statement->fetchAll(PDO::FETCH_ASSOC);
-            
-            return $rdvs;
-        }
+    public static function getAllRdvsWithPatientInfo() {
+        $connexion = Database::getInstance();
+        
+        // Requête SQL avec une jointure pour récupérer tous les rendez-vous avec les informations du patient associé
+        $query = 'SELECT appointments.*, patients.lastname, patients.firstname FROM appointments INNER JOIN patients ON appointments.idPatients = patients.id';
+        $statement = $connexion->query($query);
+        
+        // Récupération des résultats sous forme de tableau associatif
+        $rdvs = $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $rdvs;
+    }
         
     // Méthode pour récupérer les informations spécifiques d'un rendez-vous à partir de son ID
     public static function getRdvById($id) {
@@ -65,5 +69,35 @@ class Rdv {
         $rdv = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $rdv; // Retourner les informations du rendez-vous
+    }
+
+    // Méthode pour mettre à jour les informations du patient dans la base de données
+    public function updateRdv() {
+        // Assurez-vous d'avoir une instance de connexion à la base de données
+        $connexion = Database::getInstance();
+
+        // Requête SQL pour mettre à jour les informations du patient
+        $query = 'UPDATE appointments SET dateHour = :dateHour WHERE id = :id';
+        $statement = $connexion->prepare($query);
+        $statement->bindParam(':id', $this->id);
+        $statement->bindParam(':dateHour', $this->dateHour);
+
+        // Exécution de la requête
+        $statement->execute();
+    }
+    public static function getRdvsByPatientId($patient_id) {
+        // Assurez-vous d'avoir une instance de connexion à la base de données
+        $connexion = Database::getInstance();
+
+        // Requête SQL pour récupérer les rendez-vous associés à un patient donné
+        $query = 'SELECT * FROM appointments WHERE idPatients = :patient_id';
+        $statement = $connexion->prepare($query);
+        $statement->bindParam(':patient_id', $patient_id);
+        $statement->execute();
+
+        // Récupérer les résultats sous forme de tableau associatif
+        $rdvs = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $rdvs;
     }
 }

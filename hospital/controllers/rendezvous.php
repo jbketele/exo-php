@@ -2,7 +2,6 @@
 require_once '../models/ajout-rendezvous.php';
 $rdvs = Rdv::getAllRdvsWithPatientInfo();
 
-
 // Vérifier si l'ID du rendez-vous est passé en paramètre dans l'URL
 if(isset($_GET['id'])) {
     // Récupérer l'ID du rendez-vous depuis l'URL
