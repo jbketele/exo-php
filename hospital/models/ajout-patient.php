@@ -39,6 +39,14 @@ class Patient {
         $statement->bindParam(':mail', $this->mail);
         $statement->bindParam(':phone', $this->phone);
         $statement->execute();
+
+        if ($statement->execute()) {
+            // Retourne l'ID du patient nouvellement ajouté
+            return $connexion->lastInsertId();
+        } else {
+            // En cas d'erreur, retourne false
+            return false;
+        }
     }
 
     // Dans votre modèle Patient (ajout-patient.php)
@@ -146,6 +154,23 @@ class Patient {
         $filtered_patients = $statement->fetchAll(PDO::FETCH_ASSOC);
     
         return $filtered_patients;
+    }
+    
+    public static function getPatientsWithPagination($limit, $offset) {
+        $connexion = Database::getInstance();
+        $query = "SELECT * FROM patients LIMIT :limit OFFSET :offset";
+        $statement = $connexion->prepare($query);
+        $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public static function countAllPatients() {
+        $connexion = Database::getInstance();
+        $query = "SELECT COUNT(*) FROM patients";
+        $result = $connexion->query($query);
+        return $result->fetchColumn();
     }
     
 }

@@ -16,6 +16,7 @@ require_once '../controllers/liste-patients.php';
         <input type="text" id="search" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
         <button type="submit">Rechercher</button>
     </form>
+    <br>
     <?php if (!empty($patients)) : ?>
 <table>
     <tr>
@@ -29,10 +30,10 @@ require_once '../controllers/liste-patients.php';
     <tr>
         <td> <?php echo $patient['lastname'] ?> </td>
         <td> <?php echo $patient['firstname'] ?> </td>
-        <td> <?php echo $patient['birthdate'] ?> </td>
+        <td> <?php echo date('d-m-Y', strtotime($patient['birthdate'])) ?> </td>
         <td> <?php echo $patient['phone'] ?> </td>
         <td> <?php echo $patient['mail'] ?> </td>
-        <td><a href="profil-patients.php?id=<?php echo $patient['id'] ?>">Afficher profil</a></td>
+        <td><a href="profil-patients.php?id=<?php echo $patient['id'] ?>">Afficher profil</a>-</td>
         <td><a href="../controllers/supprimer-patient.php?patient_id=<?php echo $patient['id'];?>">Supprimer le patient et ses rendez-vous</a></td>
     </tr>
     <?php endforeach; ?>
@@ -41,9 +42,20 @@ require_once '../controllers/liste-patients.php';
         <p>Aucun patient trouvé.</p>
     <?php endif; ?>
 <br>
-    <button><a href="ajout-patient.php">Ajouter un patient</a></button>
+    <?php if ($totalPatients > $limit) : ?>
+        <div class="pagination">
+            <?php
+            $totalPages = ceil($totalPatients / $limit);
+            for ($i = 1; $i <= $totalPages; $i++) {
+                if ($i == $currentPage) {
+                    echo "<span>$i</span>";
+                } else {
+                    echo "<a href='?page=$i'>$i</a>";
+                }
+            }
+            ?>
+        </div>
+        <?php endif; ?>
 
 </body>
 </html>
-
-
