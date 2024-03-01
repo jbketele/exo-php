@@ -38,7 +38,6 @@ class Patient {
         $statement->bindParam(':birthdate', $this->birthdate);
         $statement->bindParam(':mail', $this->mail);
         $statement->bindParam(':phone', $this->phone);
-        $statement->execute();
 
         if ($statement->execute()) {
             // Retourne l'ID du patient nouvellement ajouté

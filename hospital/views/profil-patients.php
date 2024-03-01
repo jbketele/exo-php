@@ -15,9 +15,9 @@ require_once '../models/ajout-patient.php';
 require_once '../models/ajout-rendezvous.php';
 
 // Vérifier si l'identifiant du patient est fourni dans l'URL
-if(isset($_GET['patient_id'])) {
+if(isset($_GET['id'])) {
     // Récupérer l'identifiant du patient depuis l'URL
-    $patient_id = $_GET['patient_id'];
+    $patient_id = $_GET['id'];
 
     // Récupérer les informations du patient depuis la base de données
     $patient = Patient::getPatientById($patient_id); // Méthode hypothétique pour récupérer les informations d'un patient par son identifiant
